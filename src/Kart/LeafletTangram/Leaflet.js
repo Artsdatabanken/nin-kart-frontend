@@ -63,6 +63,7 @@ class LeafletTangram extends React.Component {
         updateMarkerPosition(this.state.clickCoordinates, this);
       }
     });
+
     map.on("zoomend", e => {
       if (e.hard) {
         // moved by bounds
@@ -105,7 +106,18 @@ class LeafletTangram extends React.Component {
 
     this.layer = Tangram.leafletLayer(def);
     this.map.addLayer(this.layer);
-    // this.layer.loadScene(this.layer.scene)
+
+    var wmsLayer = L.tileLayer.wms(
+      "http://gis3.nve.no/map/services/Nedborfelt1/MapServer/WmsServer?",
+      {
+        layers: "Vassdragsomrade", //"Nedborfelt_til_hav",
+        transparent: true,
+        format: "image/png",
+        attribution: "NVE"
+      }
+    );
+    this.map.addLayer(wmsLayer);
+
     this.icon = L.icon({
       iconUrl: "/marker/baseline_place_black_18dp.png",
       iconSize: [36, 36],
