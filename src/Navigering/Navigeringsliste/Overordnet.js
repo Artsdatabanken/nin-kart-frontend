@@ -2,9 +2,8 @@ import React from "react";
 import språk from "Funksjoner/språk";
 import Bildeavatar from "GjenbruksElement/Bildeavatar";
 
-const Overordnet = ({ overordnet, onNavigate }) => {
+const Overordnet = ({ overordnet, onNavigate, setExpanded }) => {
   let underordnet = overordnet;
-
   if (
     underordnet.length > 1 &&
     underordnet[underordnet.length - 1].url === "Natur_i_Norge"
@@ -17,6 +16,7 @@ const Overordnet = ({ overordnet, onNavigate }) => {
       key={item.url}
       onClick={e => {
         e.stopPropagation();
+        setExpanded(false);
         onNavigate(item.url);
       }}
       className="nav_menu_button nav_up_menu"
