@@ -73,10 +73,16 @@ Even tho we don't a of now support IE X)
   }
 }
 
+.kartlag {
+  top: 118px;
+  height: calc(100vh - 120px);
+  z-index: 2;
+}
+
 /* Clean out padding to get 100% width */
 .kartlag .sidebar_element,
 .kartlag li {
-  padding: 10px;
+  padding: 0px;
   padding-left: 0px;
   padding-right: 0px;
   margin-left: 0px;
@@ -89,12 +95,19 @@ Even tho we don't a of now support IE X)
 .kartlag h1,
 .kartlag_header {
   margin: 0px;
-  padding-top: 10px;
+  padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
 }
 
+.kartlag div {
+  box-sizing: border-box;
+}
+
 @media only screen and (max-width: 768px) {
+  .kartlag {
+    top: 0;
+  }
   .kartlag_content_open {
     position: relative;
     margin-top: -28px;
@@ -159,22 +172,34 @@ Even tho we don't a of now support IE X)
 
 /* Active menu and its submenu */
 
-.kartlag_open_object {
-  background: #edf4f5;
-  border-bottom: 1px solid #e4f0f2;
+.sidebar .kartlag_sub_bg,
+.sidebar .kartlag_submeny {
+  background: transparent;
+  margin-left: 5px;
+  border-left: 5px solid #b7d3d8;
+}
+
+.sidebar .kartlag_sub_bg {
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .kartlag_submeny {
-  background: #fbfbfb;
   text-align: center;
   padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .kartlag_submeny button {
   font-size: 12pt;
-  width: calc(100% / 2);
-  padding: 5px;
+  width: calc(50% - 7.5px);
+  background: #b7d3d8;
+  margin-left: 5px;
   border-bottom: 1px solid #e4f0f2;
+}
+
+.kartlag_submeny button:last-child {
+  margin-right: 5px;
 }
 
 .kartlag_submeny .legende_button {
@@ -189,8 +214,14 @@ Even tho we don't a of now support IE X)
   height: 16pt;
 }
 
-.kartlag .slider_setting,
 .kartlag_label_liste label {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 20px;
+  margin: 0px;
+}
+
+.kartlag .slider_setting {
   display: block;
   padding: 20px;
   padding-bottom: 10px;
@@ -259,4 +290,13 @@ Even tho we don't a of now support IE X)
 .kilde_box button:hover {
   background: #81b2bb;
   color: white;
+}
+
+.sidebar .submeny_container {
+  width: 100%;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 5px;
+  text-align: center;
 }

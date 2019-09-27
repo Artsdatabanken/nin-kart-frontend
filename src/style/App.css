@@ -1,4 +1,14 @@
+/** Firefox workaround for https://github.com/Leaflet/Leaflet/issues/4686 */
+.leaflet-fade-anim .leaflet-tile {
+  will-change: unset;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  will-change: unset;
+}
+
 .nin_colours {
+  color: #4d8b96;
   color: #4b909e;
   color: #81b2bb;
   color: #b7d3d8;
@@ -57,16 +67,40 @@ body {
   touch-action: none;
 }
 
+::-moz-focus-inner {
+  border: 0;
+}
+
+:focus {
+  outline: none;
+  border-bottom: 2px solid black !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+button:focus {
+  border: 2px solid black !important;
+  box-sizing: border-box;
+}
+
 a,
 a:visited,
 a:active,
 a:focus {
   color: #4b909e;
+  text-decoration: none;
 }
 
 a:hover {
   color: #81b2bb;
   cursor: pointer;
+}
+
+.inverted_link,
+.inverted_link:visited,
+.inverted_link:active,
+.inverted_link:focus {
+  color: #b7d3d8;
 }
 
 body,
@@ -82,7 +116,7 @@ h3 {
 h1,
 h2,
 h3 {
-  color: #4b909e;
+  color: #347c8a;
   font-weight: 300;
 }
 
@@ -164,6 +198,28 @@ div {
   display: none;
 }
 */
+
+.fullscreen {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .hidden_in_fullscreen {
+    display: none;
+  }
+
+  .fullscreen {
+    display: inline-block;
+    position: absolute;
+    right: 15px;
+    bottom: 184px;
+    background: white;
+    width: 34px;
+    border: 2px solid rgba(0, 0, 0, 0.27);
+    border-radius: 4px;
+    padding: 2px;
+  }
+}
 
 .tab_selector {
   display: block;
@@ -314,27 +370,28 @@ div {
   text-align: center;
   display: inline-block;
   vertical-align: top;
-  width: 200px;
+  width: 130px;
   padding: 10px;
   overflow: hidden;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: 10pt;
+  background: transparent;
 }
 
 .badge_image {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border: 5px solid #4b909e;
+  border: 2px solid #4b909e;
   display: inline-block;
+  width: 80px;
+  height: 80px;
 }
 
 .badge_image:hover {
   opacity: 0.5;
   cursor: pointer;
-}
-
-.badge span {
-  width: 100%;
-  display: block;
 }
 
 .badge b {
@@ -375,6 +432,17 @@ div {
 .lokasjon_badge_container .badge b,
 .lokasjon_badge_container .badge span {
   font-size: 9pt;
+}
+
+.badge_container {
+  width: 100%;
+  background: #edf4f5;
+  margin-bottom: 5px;
+}
+
+.badge_container b {
+  display: block;
+  width: 100%;
 }
 
 /* HAMBURGER MENY ITEMS */
@@ -508,4 +576,15 @@ div {
 .kartlag .page_warning h2 {
   padding-bottom: 10px;
   padding-left: 0px;
+}
+
+.kilde_knapp span,
+.kilde_knapp svg,
+.kilde_knapp img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.kilde_knapp svg:last-child {
+  float: right;
 }

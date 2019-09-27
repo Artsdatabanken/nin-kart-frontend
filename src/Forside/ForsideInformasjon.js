@@ -37,9 +37,11 @@ const ForsideInformasjon = props => {
                 Natur i Norge (NiN) er et type- og beskrivelsessystem for
                 naturvariasjon.
                 <br />
-                Les mer om på Artsdatabankens{" "}
-                <a href="https://www.artsdatabanken.no/NiN">
-                  nettsider om NiN.
+                <a
+                  href="https://www.artsdatabanken.no/NiN"
+                  className="inverted_link"
+                >
+                  https://www.artsdatabanken.no/NiN
                 </a>
               </p>
             </div>

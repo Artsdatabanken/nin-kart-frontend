@@ -73,7 +73,7 @@ class HamburgerMeny extends Component {
                   icon={<Info />}
                   primary="Informasjon"
                   onClick={() => {
-                    this.handleClick("?hjelp");
+                    this.handleClick("/Natur_i_Norge/hjelp");
                     context.onToggleHovedmeny();
                   }}
                 />
@@ -116,6 +116,15 @@ class HamburgerMeny extends Component {
                   icon={<GitHub />}
                   primary="Kildekode"
                 />
+                {/*
+                <Menyelement
+                  onClick={() => {
+                    this.handleClick("/forvaltningsportalen/");
+                    context.onToggleHovedmeny();
+                  }}
+                  icon={<AssignmentInd />}
+                  primary="Forvaltningsportalen"
+                />*/}
                 <Divider />
                 <Innstillinger
                   visKoder={context.visKoder}
