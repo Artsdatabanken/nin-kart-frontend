@@ -12,7 +12,8 @@ class InformasjonsVisning extends React.Component {
   dataQueryNumber = 0;
   state = {
     error: "",
-    data: {}
+    data: {},
+    environment: {}
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,13 +35,17 @@ class InformasjonsVisning extends React.Component {
       handleNavigate,
       handleLokalitetUpdate
     } = this.props;
-    const kurve = finnKurvevariabler(this.props.aktiveLag);
 
+    const kurve = finnKurvevariabler(this.props.aktiveLag);
+    let nåvrendekode = null;
+    if (meta) {
+      nåvrendekode = meta.kode;
+    }
     if (path === "/Natur_i_Norge/hjelp") {
       return <Hjelp aktivTab={aktivTab} />;
     }
     let latlng = {};
-    if (location.search) {
+    if (location.search && location.search.includes("lng")) {
       let locations = this.props
         .getPathNotTab(location)
         .replace("?", "")
@@ -56,9 +61,19 @@ class InformasjonsVisning extends React.Component {
         if (!data) {
           return null;
         }
-        console.log(data);
+        //console.log(data);
+        this.setState({ environment: data.environment });
+        // console.log(this.state.environment[nåvrendekode])
       });
-      console.log(this.stat);
+    }
+    if (meta && meta.barn && this.state.environment) {
+      let barn = meta.barn;
+      for (let i in barn) {
+        console.log(barn[i].kode);
+        if (this.state.environment[nåvrendekode]) {
+          console.log(this.state.environment[nåvrendekode].barn[kode]);
+        }
+      }
     }
 
     if (
@@ -110,6 +125,18 @@ class InformasjonsVisning extends React.Component {
           <>
             <h3>Nåværende valgte lokasjon</h3>
             lat {latlng.lat}, lng {latlng.lng}
+            {meta && (
+              <>
+                <p>Vi har meta for {nåvrendekode}</p>
+                {this.state.environment && (
+                  <p>
+                    {this.state.environment[nåvrendekode] && (
+                      <>Koden er en miljøvariabel for denne lokaliteten</>
+                    )}
+                  </p>
+                )}
+              </>
+            )}
           </>
         )}
 
