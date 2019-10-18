@@ -215,6 +215,7 @@ class App extends React.Component {
                         {aktivTab === "meny" || aktivTab === "informasjon" ? (
                           <>
                             <InformasjonsVisning
+                              getPathNotTab={getPathNotTab}
                               handleLokalitetUpdate={this.handleLokalitetUpdate}
                               handleNavigate={this.handleNavigate}
                               path={path}

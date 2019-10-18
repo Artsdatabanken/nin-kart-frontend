@@ -5,6 +5,7 @@ import Hjelp from "InformasjonsVisning/Hjelp/Hjelp";
 import parseQueryString from "./Katalog/KatalogFunksjoner/parseQueryString";
 import finnKurvevariabler from "./Katalog/KatalogFunksjoner/finnKurvevariabler";
 import KatalogFane from "./Katalog/Katalog";
+import backend from "Funksjoner/backend";
 
 // Denne boksen inneholder alle informasjonsvisningssidene
 class InformasjonsVisning extends React.Component {
@@ -37,6 +38,27 @@ class InformasjonsVisning extends React.Component {
 
     if (path === "/Natur_i_Norge/hjelp") {
       return <Hjelp aktivTab={aktivTab} />;
+    }
+    let latlng = {};
+    if (location.search) {
+      let locations = this.props
+        .getPathNotTab(location)
+        .replace("?", "")
+        .split("&");
+      locations[0] = locations[0].split("=");
+      locations[1] = locations[1].split("=");
+      latlng[locations[0][0]] = locations[0][1];
+      latlng[locations[1][0]] = locations[1][1];
+    }
+
+    if (latlng.lat && latlng.lng) {
+      backend.hentPunkt(latlng.lng, latlng.lat).then(data => {
+        if (!data) {
+          return null;
+        }
+        console.log(data);
+      });
+      console.log(this.stat);
     }
 
     if (
@@ -83,6 +105,14 @@ class InformasjonsVisning extends React.Component {
             kurve={kurve}
           />
         )}
+
+        {latlng.lat && (
+          <>
+            <h3>Nåværende valgte lokasjon</h3>
+            lat {latlng.lat}, lng {latlng.lng}
+          </>
+        )}
+
         <div className="big_page_sidebar" />
       </div>
     );
