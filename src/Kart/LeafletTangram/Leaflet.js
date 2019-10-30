@@ -188,6 +188,7 @@ class LeafletTangram extends React.Component {
     let prevlok = this.state.lokalitetdata;
     backend.hentPunkt(lng, lat, e).then(data => {
       if (!data) {
+        console.log("no data");
         return null;
       }
       let url = getLokalitetUrl(lat, lng, data);

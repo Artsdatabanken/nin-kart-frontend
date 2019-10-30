@@ -54,6 +54,10 @@ function getPathNotTab(path) {
   return "";
 }
 
+function getParam(path) {
+  return path.search;
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -310,6 +314,7 @@ class App extends React.Component {
                   <HamburgerMeny
                     spraak={this.state.spraak}
                     handleSpraak={this.handleSpraak}
+                    onNavigate={this.handleNavigate}
                   />
                 </>
               )}
@@ -328,7 +333,8 @@ class App extends React.Component {
     if (new_url[0] !== "/") {
       new_url = "/" + url;
     }
-    this.props.history.push(new_url + "?" + getPathTab(this.props.location));
+    console.log(getParam(this.props.location));
+    this.props.history.push(new_url + getParam(this.props.location));
   };
 
   onNavigateToTab = tab => {

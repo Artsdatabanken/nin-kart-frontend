@@ -58,20 +58,23 @@ class InformasjonsVisning extends React.Component {
 
     if (latlng.lat && latlng.lng) {
       backend.hentPunkt(latlng.lng, latlng.lat).then(data => {
+        console.log("henter punkt ...");
+        console.log(data);
         if (!data) {
+          console.log(latlng.lat, latlng.lng, "no data");
           return null;
         }
-        //console.log(data);
+        console.log("data:", data);
         this.setState({ environment: data.environment });
-        // console.log(this.state.environment[nåvrendekode])
       });
     }
+
     if (meta && meta.barn && this.state.environment) {
       let barn = meta.barn;
       for (let i in barn) {
         console.log(barn[i].kode);
         if (this.state.environment[nåvrendekode]) {
-          console.log(this.state.environment[nåvrendekode].barn[kode]);
+          console.log(this.state.environment[nåvrendekode]);
         }
       }
     }
@@ -130,8 +133,10 @@ class InformasjonsVisning extends React.Component {
                 <p>Vi har meta for {nåvrendekode}</p>
                 {this.state.environment && (
                   <p>
-                    {this.state.environment[nåvrendekode] && (
+                    {this.state.environment[nåvrendekode] ? (
                       <>Koden er en miljøvariabel for denne lokaliteten</>
+                    ) : (
+                      <>Koden er IKKE en miljøvariabel for denne lokaliteten</>
                     )}
                   </p>
                 )}

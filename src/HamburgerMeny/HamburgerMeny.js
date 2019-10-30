@@ -63,7 +63,7 @@ class HamburgerMeny extends Component {
                   }
                   primary="Forside"
                   onClick={() => {
-                    this.handleClick("/");
+                    this.props.onNavigate("/");
                     context.onToggleHovedmeny();
                   }}
                 />
@@ -102,7 +102,7 @@ class HamburgerMeny extends Component {
 
                 <Menyelement
                   onClick={() => {
-                    this.handleClick("/Datakilde/");
+                    this.props.onNavigate("/Datakilde/");
                     context.onToggleHovedmeny();
                   }}
                   icon={<AssignmentInd />}
@@ -118,21 +118,12 @@ class HamburgerMeny extends Component {
                   icon={<GitHub />}
                   primary="Kildekode"
                 />
-                {/*
-                <Menyelement
-                  onClick={() => {
-                    this.handleClick("/forvaltningsportalen/");
-                    context.onToggleHovedmeny();
-                  }}
-                  icon={<AssignmentInd />}
-                  primary="Forvaltningsportalen"
-                />*/}
                 <Divider />
                 <Innstillinger
                   visKoder={context.visKoder}
                   sorterPåKode={context.sorterPåKode}
                   onUpdateSetting={context.onUpdateValue}
-                  onNavigate={this.handleNavigate}
+                  onNavigate={this.onNavigate}
                   spraak={spraak}
                   handleSpraak={handleSpraak}
                 />

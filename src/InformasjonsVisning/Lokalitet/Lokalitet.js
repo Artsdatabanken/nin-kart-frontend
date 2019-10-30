@@ -35,8 +35,10 @@ class Lokalitet extends Component {
     // Ny APIVERSJON, Mye ukontrollert data.
     backend.hentPunkt(lng, lat).then(data => {
       if (!data) {
+        console.log("no data");
         return null;
       } else {
+        console.log(data);
         this.setState({
           data: data,
           landskap: data.landskap
