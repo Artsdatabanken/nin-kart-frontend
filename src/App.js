@@ -194,7 +194,7 @@ class App extends React.Component {
                   </div>
 
                   {forside ? (
-                    <ForsideInformasjon />
+                    <ForsideInformasjon onNavigate={this.handleNavigate} />
                   ) : (
                     <>
                       <MobileNavigation

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import Lokalitet from "InformasjonsVisning/Lokalitet/Lokalitet";
 import Hjelp from "InformasjonsVisning/Hjelp/Hjelp";
@@ -8,45 +8,27 @@ import KatalogFane from "./Katalog/Katalog";
 import backend from "Funksjoner/backend";
 
 // Denne boksen inneholder alle informasjonsvisningssidene
-class InformasjonsVisning extends React.Component {
-  dataQueryNumber = 0;
-  state = {
-    error: "",
-    data: {},
-    environment: {}
-  };
+function InformasjonsVisning(props) {
+  const {
+    opplyst,
+    onMouseEnter,
+    onMouseLeave,
+    onUpdateLayerProp,
+    onUpdateMetaProp,
+    meta,
+    location,
+    aktivTab,
+    path,
+    handleNavigate,
+    handleLokalitetUpdate
+  } = props;
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.meta !== this.props.meta) this.setState({ query: null });
-  }
-
-  render() {
-    const data = this.state.data;
-    const {
-      opplyst,
-      onMouseEnter,
-      onMouseLeave,
-      onUpdateLayerProp,
-      onUpdateMetaProp,
-      meta,
-      location,
-      aktivTab,
-      path,
-      handleNavigate,
-      handleLokalitetUpdate
-    } = this.props;
-
-    const kurve = finnKurvevariabler(this.props.aktiveLag);
-    let nåvrendekode = null;
-    if (meta) {
-      nåvrendekode = meta.kode;
-    }
-    if (path === "/Natur_i_Norge/hjelp") {
-      return <Hjelp aktivTab={aktivTab} />;
-    }
-    let latlng = {};
+  const [environment, setEnvironment] = useState({});
+  const [latlng, setLatLng] = useState({});
+  useEffect(() => {
     if (location.search && location.search.includes("lng")) {
-      let locations = this.props
+      let latlng = {};
+      let locations = props
         .getPathNotTab(location)
         .replace("?", "")
         .split("&");
@@ -54,102 +36,108 @@ class InformasjonsVisning extends React.Component {
       locations[1] = locations[1].split("=");
       latlng[locations[0][0]] = locations[0][1];
       latlng[locations[1][0]] = locations[1][1];
+      setLatLng(latlng);
     }
 
     if (latlng.lat && latlng.lng) {
       backend.hentPunkt(latlng.lng, latlng.lat).then(data => {
-        console.log("henter punkt ...");
-        console.log(data);
+        console.log("henter punkt ...", data);
         if (!data) {
           console.log(latlng.lat, latlng.lng, "no data");
           return null;
         }
         console.log("data:", data);
-        this.setState({ environment: data.environment });
+        setEnvironment(data.environment);
       });
     }
 
-    if (meta && meta.barn && this.state.environment) {
+    if (meta && meta.barn && environment) {
       let barn = meta.barn;
       for (let i in barn) {
         console.log(barn[i].kode);
-        if (this.state.environment[nåvrendekode]) {
-          console.log(this.state.environment[nåvrendekode]);
+        if (environment[nåvrendekode]) {
+          console.log(environment[nåvrendekode]);
         }
       }
     }
+  }, [location, meta]);
 
-    if (
-      location.search &&
-      location.search.includes("?lng") &&
-      path.includes("lokalitet")
-    ) {
-      const { lng, lat, vis } = parseQueryString(location.search);
-      return (
-        <Lokalitet
-          lng={lng}
-          lat={lat}
-          vis={vis}
-          aktivTab={aktivTab}
-          history={this.props.history}
-          onNavigate={handleNavigate}
-          handleLokalitetUpdate={handleLokalitetUpdate}
-        />
-      );
-    }
+  const kurve = finnKurvevariabler(props.aktiveLag);
+  let nåvrendekode = null;
+  if (meta) {
+    nåvrendekode = meta.kode;
+  }
+  if (path === "/Natur_i_Norge/hjelp") {
+    return <Hjelp aktivTab={aktivTab} />;
+  }
+  console.log("update");
 
+  if (
+    location.search &&
+    location.search.includes("?lng") &&
+    path.includes("lokalitet")
+  ) {
+    const { lng, lat, vis } = parseQueryString(location.search);
     return (
-      <div
-        className={
-          (aktivTab === "informasjon" ? "mobile_on" : "mobile_off") +
-          " main_body"
-        }
-      >
-        {meta && (
-          <KatalogFane
-            meta={meta}
-            onFitBounds={this.props.onFitBounds}
-            onUpdateLayerProp={onUpdateLayerProp}
-            onNavigate={handleNavigate}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            opplyst={opplyst}
-            data={data}
-            onUpdateMetaProp={onUpdateMetaProp}
-            has_error={this.state.error}
-            handleCloseSnackbar={this.handleCloseSnackbar}
-            erAktivert={this.props.erAktivert}
-            onToggleLayer={this.props.onToggleLayer}
-            kurve={kurve}
-          />
-        )}
-
-        {latlng.lat && (
-          <>
-            <h3>Nåværende valgte lokasjon</h3>
-            lat {latlng.lat}, lng {latlng.lng}
-            {meta && (
-              <>
-                <p>Vi har meta for {nåvrendekode}</p>
-                {this.state.environment && (
-                  <p>
-                    {this.state.environment[nåvrendekode] ? (
-                      <>Koden er en miljøvariabel for denne lokaliteten</>
-                    ) : (
-                      <>Koden er IKKE en miljøvariabel for denne lokaliteten</>
-                    )}
-                  </p>
-                )}
-              </>
-            )}
-          </>
-        )}
-
-        <div className="big_page_sidebar" />
-      </div>
+      <Lokalitet
+        lng={lng}
+        lat={lat}
+        vis={vis}
+        aktivTab={aktivTab}
+        history={props.history}
+        onNavigate={handleNavigate}
+        handleLokalitetUpdate={handleLokalitetUpdate}
+      />
     );
   }
-  handleCloseSnackbar = () => this.setState({ error: null });
+
+  return (
+    <div
+      className={
+        (aktivTab === "informasjon" ? "mobile_on" : "mobile_off") + " main_body"
+      }
+    >
+      {meta && (
+        <KatalogFane
+          meta={meta}
+          onFitBounds={props.onFitBounds}
+          onUpdateLayerProp={onUpdateLayerProp}
+          onNavigate={handleNavigate}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          opplyst={opplyst}
+          data={{}}
+          onUpdateMetaProp={onUpdateMetaProp}
+          erAktivert={props.erAktivert}
+          onToggleLayer={props.onToggleLayer}
+          kurve={kurve}
+        />
+      )}
+
+      {latlng.lat && (
+        <>
+          <h3>Nåværende valgte lokasjon</h3>
+          lat {latlng.lat}, lng {latlng.lng}
+          {meta && (
+            <>
+              <p>Vi har meta for {nåvrendekode}</p>
+              {environment && (
+                <p>
+                  {environment[nåvrendekode] ? (
+                    <>Koden er en miljøvariabel for denne lokaliteten</>
+                  ) : (
+                    <>Koden er IKKE en miljøvariabel for denne lokaliteten</>
+                  )}
+                </p>
+              )}
+            </>
+          )}
+        </>
+      )}
+
+      <div className="big_page_sidebar" />
+    </div>
+  );
 }
 
 export default withRouter(InformasjonsVisning);

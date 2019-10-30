@@ -1,5 +1,4 @@
 import React from "react";
-import { Snackbar } from "@material-ui/core";
 import KatalogHeader from "./KatalogHeader/KatalogHeader";
 import Taksonomi from "./Klassifiseringer/Taksonomi";
 import Risikovurdering from "./Klassifiseringer/Risikovurdering";
@@ -19,8 +18,6 @@ const KatalogFane = ({
   opplyst,
   data,
   onUpdateMetaProp,
-  has_error,
-  handleCloseSnackbar,
   erAktivert,
   onToggleLayer,
   kurve
@@ -59,15 +56,6 @@ const KatalogFane = ({
           onMouseLeave={onMouseLeave}
           isDatakilde={meta.tittel.nb}
         />
-
-        {has_error && (
-          <Snackbar
-            open={true}
-            message={"Søk feilet: " + JSON.stringify(this.state.error)}
-            autoHideDuration={4000}
-            onRequestClose={handleCloseSnackbar}
-          />
-        )}
 
         <KatalogKilder
           data={data}
