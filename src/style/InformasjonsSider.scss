@@ -18,6 +18,16 @@
   position: relative;
 }
 
+.katalog_lokasjon_indikator_displayer {
+  flex: 1;
+  min-width: 150px;
+  max-width: 150px;
+  padding: 0px;
+  margin: 5px;
+  position: relative;
+  background: transparent;
+}
+
 .subelement_decorative_box {
   position: absolute;
   display: block;
@@ -39,4 +49,10 @@
 
 .subelement_text.nav_text {
   max-width: 100%;
+}
+
+.katalog_lokasjon_indikator_displayer .subelement_decorative_image {
+  height: 50px;
+  width: 50px;
+  margin: auto;
 }

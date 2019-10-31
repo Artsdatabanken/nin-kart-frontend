@@ -9,16 +9,23 @@ class OverlappBoks extends React.Component {
     if (!latlng.lat) return null;
     let landskaplist = [];
     if (landskap.url) {
+      let currentItem = meta.url.split("/").slice(-1)[0];
       let landskapitems = ("/" + landskap.url).replace(meta.url, "").split("/");
+      landskapitems.unshift(currentItem);
+
       let currentstring = meta.url;
       for (let i in landskapitems) {
         if (landskapitems[i] !== "") {
           let item = landskapitems[i];
           currentstring += "/" + item;
+          currentstring = currentstring.replace(
+            "Typeinndeling/Typeinndeling",
+            "Typeinndeling"
+          );
+          console.log(currentstring);
           landskaplist.push([currentstring, item.replace(/_/g, " ")]);
         }
       }
-      console.log(landskaplist);
     }
 
     return (
@@ -41,11 +48,10 @@ class OverlappBoks extends React.Component {
                   {landskap.kode && landskap.kode.includes(meta.kode) ? (
                     <>
                       <h2>Landskapstype</h2>
-                      Den valgte lokasjonen inneholder denne landskapstypen
                       <br />
                       {landskaplist.map(e => {
                         return (
-                          <button className="katalog_link_displayer">
+                          <button className="katalog_lokasjon_indikator_displayer">
                             <div
                               className="subelement_decorative_image"
                               style={{
@@ -55,6 +61,7 @@ class OverlappBoks extends React.Component {
                                   "url('https://data.artsdatabanken.no" +
                                   e[0] +
                                   "/foto_408.jpg')",
+                                borderRadius: "50%",
                                 zIndex: "10"
                               }}
                             />
